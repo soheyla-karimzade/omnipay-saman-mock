@@ -1,11 +1,11 @@
 <?php
 
-namespace Omnipay\Saman\Message;
+namespace Omnipay\Saman\TestMessage;
 
 /**
  * Class InquiryOrderResponse
  */
-class RefundOrderResponse extends AbstractResponse
+class RefundOrderTestModeResponse extends AbstractResponse
 {
     /**
      * @inheritDoc

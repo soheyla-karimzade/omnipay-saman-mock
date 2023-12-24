@@ -1,13 +1,13 @@
 <?php
 
-namespace Omnipay\Saman\Message;
+namespace Omnipay\Saman\TestMessage;
 
 use Omnipay\Common\Exception\InvalidRequestException;
 
 /**
- * Class VerifyOrderRequest
+ * Class InquiryOrderRequest
  */
-class VerifyOrderRequest extends AbstractRequest
+class RefundOrderTestModeRequest extends AbstractRequest
 {
     /**
      * @inheritDoc
@@ -24,7 +24,7 @@ class VerifyOrderRequest extends AbstractRequest
      * @return mixed
      * @throws InvalidRequestException
      */
-    public function getData():array
+    public function getData()
     {
         // Validate required parameters before return data
         $this->validate('RefNum','TerminalNumber');
@@ -41,15 +41,15 @@ class VerifyOrderRequest extends AbstractRequest
      */
     protected function createUri(string $endpoint)
     {
-        return $endpoint . '/verifyTxnRandomSessionkey/ipg/VerifyTransaction';
+        return $endpoint . '/PaymentPurchase.json';
     }
 
     /**
      * @param array $data
-     * @return VerifyOrderResponse
+     * @return RefundOrderTestModeResponse
      */
     protected function createResponse(array $data)
     {
-        return new VerifyOrderResponse($this, $data);
+        return new RefundOrderTestModeResponse($this, $data);
     }
 }

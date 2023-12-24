@@ -1,21 +1,22 @@
 <?php
 
 
-namespace Omnipay\Saman\Message;
+namespace Omnipay\Saman\TestMessage;
 
 use Omnipay\Common\Message\RedirectResponseInterface;
 
 /**
  * Class CreateOrderResponse
  */
-class CreateTokenResponse extends AbstractResponse implements RedirectResponseInterface
+class CreateTokenTestModeResponse extends AbstractResponse implements RedirectResponseInterface
 {
     /**
      * @return bool
      */
     public function isSuccessful()
     {
-
+//echo (int)$this->getHttpStatus() ;
+//echo (int)$this->getCode();
         return (int)$this->getHttpStatus() === 200 && (int)$this->getCode() === 1;
     }
 
@@ -24,6 +25,8 @@ class CreateTokenResponse extends AbstractResponse implements RedirectResponseIn
      */
     public function isRedirect()
     {
+
+//        die($this->getCode() );
         return (int)$this->getCode() === 1 &&
             isset($this->data['token']) &&
             !empty($this->data['token']);
@@ -34,9 +37,11 @@ class CreateTokenResponse extends AbstractResponse implements RedirectResponseIn
      */
     public function getRedirectUrl()
     {
-        /** @var CreateTokenRequest $request */
+        /** @var CreateTokenTestModeRequest $request */
         $request = $this->request;
-        return sprintf('%s/OnlinePG/SendToken?token=%s', $request->getEndpoint(), $this->getTransactionReference());
+
+//        echo sprintf('http://localhost:9005/OnlinePG/SendToken?token=%s', $request->getEndpoint(), $this->getTransactionReference());
+        return sprintf('http://localhost:9005/OnlinePG/SendToken?token=%s', $this->getTransactionReference());
     }
 
 

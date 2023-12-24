@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Omnipay\Saman\Message;
+namespace Omnipay\Saman\TestMessage;
 
 /**
  * Class AbstractResponse

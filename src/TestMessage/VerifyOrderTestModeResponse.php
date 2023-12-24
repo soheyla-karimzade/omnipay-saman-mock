@@ -1,11 +1,11 @@
 <?php
 
-namespace Omnipay\Saman\Message;
+namespace Omnipay\Saman\TestMessage;
 
 /**
  * Class VerifyOrderResponse
  */
-class VerifyOrderResponse extends AbstractResponse
+class VerifyOrderTestModeResponse extends AbstractResponse
 {
 
     /**

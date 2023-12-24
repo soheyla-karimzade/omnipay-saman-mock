@@ -1,13 +1,13 @@
 <?php
 
-namespace Omnipay\Saman\Message;
+namespace Omnipay\Saman\TestMessage;
 
 use Omnipay\Common\Exception\InvalidRequestException;
 
 /**
  * Class CreateTokenRequest
  */
-class CreateTokenRequest extends AbstractRequest
+class CreateTokenTestModeRequest extends AbstractRequest
 {
     /**
      * @inheritDoc
@@ -50,15 +50,19 @@ class CreateTokenRequest extends AbstractRequest
      */
     protected function createUri(string $endpoint)
     {
-        return $endpoint . '/onlinepg/onlinepg';
+        if(!$this->getMode())
+            return $endpoint .'/PaymentTokenFailure.json';
+
+        return $endpoint .'/PaymentToken.json';
+
     }
 
     /**
      * @param array $data
-     * @return CreateTokenResponse
+     * @return CreateTokenTestModeResponse
      */
     protected function createResponse(array $data)
     {
-        return new CreateTokenResponse($this, $data);
+        return new CreateTokenTestModeResponse($this, $data);
     }
 }

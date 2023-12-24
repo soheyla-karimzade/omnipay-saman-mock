@@ -2,17 +2,23 @@
 
 
 
-namespace Omnipay\Saman\Message;
+namespace Omnipay\Saman\TestMessage;
 
 use Exception;
+use Omnipay\Common\Exception\InvalidResponseException;
+use Omnipay\Saman\Message\AbstractResponse;
 use RuntimeException;
 use Omnipay\Common\Exception\InvalidRequestException;
-use Omnipay\Common\Exception\InvalidResponseException;
-use Omnipay\Common\Message\ResponseInterface;
+use stdClass;
 
-/**
- * Class AbstractRequest
- */
+///**
+// * Class AbstractRequest
+// */
+//function json_response(int $int, array $array)
+//{
+//
+//}
+
 abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 {
     /**
@@ -20,7 +26,8 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
      *
      * @var string URL
      */
-    protected string $liveEndpoint = 'https://sep.shaparak.ir';
+    protected string $liveEndpoint = 'http://localhost:9005/src/TestMessage';
+//    protected string $liveEndpoint = '';
 
     /**
      * @return string
@@ -38,6 +45,46 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
      * @return AbstractResponse
      */
     abstract protected function createResponse(array $data);
+
+    /**
+     * @param bool $value
+     * @return self
+     */
+    public function setMode($value)
+    {
+        return $this->setParameter('mode', $value);
+    }
+
+
+    /**
+     * Gets the test mode of the request from the gateway.
+     *
+     * @return boolean
+     */
+    public function getTestMode()
+    {
+        return $this->getParameter('testMode');
+    }
+
+    /**
+     * Sets the test mode of the request.
+     *
+     * @param boolean $value True for test mode on.
+     * @return $this
+     */
+    public function setTestMode($value)
+    {
+        return $this->setParameter('testMode', $value);
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function getMode(): bool
+    {
+        return $this->getParameter('mode');
+    }
 
 
     public function setOrderId(int $value){
@@ -220,9 +267,9 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
      */
     public function getEndpoint(): string
     {
-        if ($this->getTestMode()) {
-            throw new \InvalidArgumentException('Nextpay payment gateway does not support test mode.');
-        }
+//        if ($this->getTestMode()) {
+//            throw new \InvalidArgumentException('Saman payment gateway does not support test mode.');
+//        }
         return $this->liveEndpoint;
     }
 
@@ -243,41 +290,80 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     }
 
 
-    /**
-     * Send the request with specified data
-     *
-     * @param mixed $data The data to send.
-     * @return ResponseInterface
-     * @throws RuntimeException
-     * @throws InvalidResponseException
-     */
+    function json_response($code = 200, $message = null)
+    {
+
+        ob_start();
+        // clear the old headers
+//        header_remove();
+        // set the/ actual code
+        http_response_code($code);
+        // set the header to make sure cache is forced
+//        header("Cache-Control:no-transform,public,max-age=300,s-maxage=900");
+//         treat this as json
+//        header('Content-Type:application/json');
+        $status = array(
+            200 => '200 OK',
+            400 => '400 Bad Request',
+            422 => 'Unprocessable Entity',
+            500 => '500 Internal Server Error'
+        );
+        // ok, validation error, or failure
+//        header('Status:'.$status[$code]);
+        ob_clean();
+
+
+//        ob_end_clean();
+        // return the encoded json
+        return json_encode(array(
+            'status' => $code < 300, // success or not?
+            'message' => $message
+        ));
+    }
+
+
+
     public function sendData($data)
     {
-        try {
-            $body = json_encode($data);
 
+        $url=$this->createUri($this->getEndpoint());
+
+        try {
+
+            $body = json_encode($data);
             if ($body === false) {
                 throw new RuntimeException('Err in access/refresh token.');
             }
 
-            $httpResponse = $this->httpClient->request(
-                $this->getHttpMethod(),
-                $this->createUri($this->getEndpoint()),
-                [
-                    'Accept' => 'application/json',
-                    'Content-type' => 'application/json',
-                ],
-                $body
-            );
-            $json = $httpResponse->getBody()->getContents();
-            $result = !empty($json) ? json_decode($json, true) : [];
-            $result['httpStatus'] = $httpResponse->getStatusCode();
+            $url=$this->createUri($this->getEndpoint());
+            $filename = $url;
+            $data = file_get_contents($filename); //data read from json file
+//            $json=json_decode($data);
+
+//            $result= $this->json_response(200, $json);
+//            $json = $httpResponse->getBody()->getContents();
+
+            $result = !empty($data) ? json_decode($data, true) : [];
+            $result['httpStatus'] = 200;
             return $this->response = $this->createResponse($result);
-        } catch (Exception $e) {
+        }
+        catch (Exception $e){
             throw new InvalidResponseException(
                 'Error communicating with payment gateway: ' . $e->getMessage(),
                 $e->getCode()
             );
         }
+
     }
+
+    public function successResponse(){
+        $myObj = new stdClass();
+        $myObj->status = 1;
+        $myObj->token = "2c3c1fefac5a48geb9f9be7e445dd9b2";
+        /** @var object $data */
+        $data = json_encode($myObj);
+        return $data;
+    }
+
+
 }
