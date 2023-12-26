@@ -1,6 +1,6 @@
 <?php
 
-namespace Omnipay\Saman\TestMessage;
+namespace Omnipay\SamanMock\TestMessage;
 
 /**
  * Class VerifyOrderResponse

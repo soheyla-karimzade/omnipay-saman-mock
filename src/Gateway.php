@@ -1,11 +1,11 @@
 <?php
 
-namespace Omnipay\Saman;
+namespace Omnipay\SamanMock;
 
 use Omnipay\Common\AbstractGateway;
-use Omnipay\Saman\TestMessage\RefundOrderTestModeRequest;
-use Omnipay\Saman\TestMessage\VerifyOrderTestModeRequest;
-use Omnipay\Saman\TestMessage\CreateTokenTestModeRequest;
+use Omnipay\SamanMock\TestMessage\RefundOrderTestModeRequest;
+use Omnipay\SamanMock\TestMessage\VerifyOrderTestModeRequest;
+use Omnipay\SamanMock\TestMessage\CreateTokenTestModeRequest;
 
 class Gateway extends  AbstractGateway
 {
@@ -30,7 +30,6 @@ class Gateway extends  AbstractGateway
             'testMode' => false,
             'TerminalId' => '',
             'returnUrl' => '',
-            'mode'=>true,
         ];
     }
 
@@ -75,23 +74,6 @@ class Gateway extends  AbstractGateway
 
 
     /**
-     * @param bool $value
-     * @return self
-     */
-    public function setMode(bool $value): self
-    {
-        return $this->setParameter('mode', $value);
-    }
-
-    /**
-     * @return bool
-     */
-    public function getMode(): bool
-    {
-        return $this->getParameter('mode');
-    }
-
-    /**
      * @param string $value
      * @return self
      */
@@ -115,10 +97,7 @@ class Gateway extends  AbstractGateway
      */
     public function purchase(array $options = [])
     {
-//        if($this->getTestMode()===false)
-//            return $this->createRequest(CreateTokenRequest::class, $options);
-//        if ($this->getTestMode()===true)
-            return $this->createRequest(CreateTokenTestModeRequest::class, $options);
+        return $this->createRequest(CreateTokenTestModeRequest::class, $options);
     }
 
     /**
@@ -126,10 +105,7 @@ class Gateway extends  AbstractGateway
      */
     public function completePurchase(array $options = [])
     {
-//        if($this->getTestMode()===false)
-//            return $this->createRequest(VerifyOrderRequest::class, $options);
-//        if ($this->getTestMode()===true)
-            return $this->createRequest(VerifyOrderTestModeRequest::class, $options);
+        return $this->createRequest(VerifyOrderTestModeRequest::class, $options);
     }
 
     /**
@@ -137,15 +113,7 @@ class Gateway extends  AbstractGateway
      */
     public function refund(array $options = [])
     {
-//        if($this->getTestMode()===false)
-//            return $this->createRequest(RefundOrderTestModeRequest::class, $options);
-//        if ($this->getTestMode()===true)
-            return $this->createRequest(RefundOrderTestModeRequest::class, $options);
+        return $this->createRequest(RefundOrderTestModeRequest::class, $options);
     }
 
-
-
-    public function failureResponse(){
-
-    }
 }

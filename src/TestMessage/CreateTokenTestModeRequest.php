@@ -1,6 +1,6 @@
 <?php
 
-namespace Omnipay\Saman\TestMessage;
+namespace Omnipay\SamanMock\TestMessage;
 
 use Omnipay\Common\Exception\InvalidRequestException;
 
@@ -41,6 +41,7 @@ class CreateTokenTestModeRequest extends AbstractRequest
             'payer_desc' => $this->getPayerDesc(),
             'auto_verify' => $this->getAutoVerify(),
             'allowed_card' => $this->getAllowedCard(),
+            'mode'=> $this->getMode()
         ];
     }
 

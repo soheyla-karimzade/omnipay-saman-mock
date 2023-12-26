@@ -1,15 +1,15 @@
 {
-    "name": "soheylak/omnipay-saman",
+    "name": "soheylak/omnipay-saman-mock",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Omnipay\\Saman\\": "src/"
+            "Omnipay\\SamanMock\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Omnipay\\Saman\\Tests\\": "tests/"
+            "Omnipay\\SamanMock\\Tests\\": "tests/"
         }
     },
     "authors": [

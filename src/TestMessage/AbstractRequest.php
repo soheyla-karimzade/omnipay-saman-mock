@@ -2,22 +2,12 @@
 
 
 
-namespace Omnipay\Saman\TestMessage;
+namespace Omnipay\SamanMock\TestMessage;
 
 use Exception;
 use Omnipay\Common\Exception\InvalidResponseException;
-use Omnipay\Saman\Message\AbstractResponse;
 use RuntimeException;
 use Omnipay\Common\Exception\InvalidRequestException;
-use stdClass;
-
-///**
-// * Class AbstractRequest
-// */
-//function json_response(int $int, array $array)
-//{
-//
-//}
 
 abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 {
@@ -27,7 +17,6 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
      * @var string URL
      */
     protected string $liveEndpoint = 'http://localhost:9005/src/TestMessage';
-//    protected string $liveEndpoint = '';
 
     /**
      * @return string
@@ -55,29 +44,6 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->setParameter('mode', $value);
     }
 
-
-    /**
-     * Gets the test mode of the request from the gateway.
-     *
-     * @return boolean
-     */
-    public function getTestMode()
-    {
-        return $this->getParameter('testMode');
-    }
-
-    /**
-     * Sets the test mode of the request.
-     *
-     * @param boolean $value True for test mode on.
-     * @return $this
-     */
-    public function setTestMode($value)
-    {
-        return $this->setParameter('testMode', $value);
-    }
-
-
     /**
      * @return bool
      */
@@ -85,7 +51,6 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     {
         return $this->getParameter('mode');
     }
-
 
     public function setOrderId(int $value){
         return $this->setParameter('orderId', $value);
@@ -289,44 +254,8 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->getParameter('TerminalNumber');
     }
 
-
-    function json_response($code = 200, $message = null)
-    {
-
-        ob_start();
-        // clear the old headers
-//        header_remove();
-        // set the/ actual code
-        http_response_code($code);
-        // set the header to make sure cache is forced
-//        header("Cache-Control:no-transform,public,max-age=300,s-maxage=900");
-//         treat this as json
-//        header('Content-Type:application/json');
-        $status = array(
-            200 => '200 OK',
-            400 => '400 Bad Request',
-            422 => 'Unprocessable Entity',
-            500 => '500 Internal Server Error'
-        );
-        // ok, validation error, or failure
-//        header('Status:'.$status[$code]);
-        ob_clean();
-
-
-//        ob_end_clean();
-        // return the encoded json
-        return json_encode(array(
-            'status' => $code < 300, // success or not?
-            'message' => $message
-        ));
-    }
-
-
-
     public function sendData($data)
     {
-
-        $url=$this->createUri($this->getEndpoint());
 
         try {
 
@@ -338,11 +267,6 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             $url=$this->createUri($this->getEndpoint());
             $filename = $url;
             $data = file_get_contents($filename); //data read from json file
-//            $json=json_decode($data);
-
-//            $result= $this->json_response(200, $json);
-//            $json = $httpResponse->getBody()->getContents();
-
             $result = !empty($data) ? json_decode($data, true) : [];
             $result['httpStatus'] = 200;
             return $this->response = $this->createResponse($result);
@@ -355,15 +279,5 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         }
 
     }
-
-    public function successResponse(){
-        $myObj = new stdClass();
-        $myObj->status = 1;
-        $myObj->token = "2c3c1fefac5a48geb9f9be7e445dd9b2";
-        /** @var object $data */
-        $data = json_encode($myObj);
-        return $data;
-    }
-
 
 }

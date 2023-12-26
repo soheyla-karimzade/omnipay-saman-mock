@@ -1,6 +1,6 @@
 <?php
 
-namespace Omnipay\Saman\TestMessage;
+namespace Omnipay\SamanMock\TestMessage;
 
 use Omnipay\Common\Exception\InvalidRequestException;
 
@@ -32,6 +32,7 @@ class RefundOrderTestModeRequest extends AbstractRequest
         return [
             'RefNum' => $this->getRefNum(),
             'TerminalNumber' => $this->getTerminalNumber(),
+            'mode'=> $this->getMode()
         ];
     }
 
@@ -41,8 +42,12 @@ class RefundOrderTestModeRequest extends AbstractRequest
      */
     protected function createUri(string $endpoint)
     {
-        return $endpoint . '/PaymentPurchase.json';
+        if(!$this->getMode())
+            return $endpoint .'/VerifyOrderFailure.json';
+
+        return $endpoint .'/VerifyOrder.json';
     }
+
 
     /**
      * @param array $data
