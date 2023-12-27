@@ -25,7 +25,7 @@
         "ext-mbstring": "*",
         "omnipay/common": "^3",
         "symfony/http-client": "^6.4",
-      "ext-http": "*"
+        "ext-http": "*"
     },
     "require-dev": {
         "omnipay/tests": "4.1.1",
