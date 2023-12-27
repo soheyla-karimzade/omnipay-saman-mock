@@ -1,9 +1,14 @@
 ## using
 
+```
+composer require soheylak/omnipay-saman-mock
+```
+
+
+## assign port number 
+```
 php -S localhost:9005
 
-
-```
 http://localhost:9005/src/TestMessage/PaymentToken.json
 http://localhost:9005/src/TestMessage/PaymentTokenFailure.json
 http://localhost:9005/src/TestMessage/VerifyOrder.json
