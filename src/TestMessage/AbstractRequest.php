@@ -16,7 +16,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
      *
      * @var string URL
      */
-    protected string $liveEndpoint = 'http://localhost:9005/src/TestMessage';
+    protected string $liveEndpoint = './src/TestMessage';
 
     /**
      * @return string
